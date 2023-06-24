@@ -24,6 +24,8 @@ const todoSchema = new mongoose.Schema({
   purpose: { type: String, required:false},
   commit: { type: String, required:false},
   important: {type: String, required:false},
+},{
+  versionKey:'__v',
 });
 
 // Create a Todo model
@@ -91,7 +93,9 @@ app.put('/todos/:id', (req, res) => {
       if (!updatedTodo) {
         res.status(404).json({ error: 'Todo not found' });
       } else {
+        //console.log(updatedTodo.__v);
         res.json(updatedTodo);
+        
       }
     })
     .catch(error => {
