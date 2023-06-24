@@ -1,9 +1,34 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const cors = require('cors');
 const port = process.env.PORT || 3000;
 
+
+mongoose.connect('mongodb+srv://ccfurkanz:SwzPk85NGvmGOrw3@todo-try.xvyjmxj.mongodb.net/myTodos?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(error => {
+    console.error('Failed to connect to MongoDB:', error);
+    process.exit(1);
+  });
+
+// Create a Todo schema
+const todoSchema = new mongoose.Schema({
+  task: { type: String, required: true },
+});
+
+// Create a Todo model
+const Todo = mongoose.model('Todo', todoSchema);
+
+// 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cors()); // Enable CORS middleware
 
 // Array to store sample data
 let todos = [
@@ -13,19 +38,30 @@ let todos = [
 
 // GET /todos - Get all todos
 app.get('/todos', (req, res) => {
-  res.json(todos);
+  Todo.find()
+    .then(todos => {
+      res.json(todos);
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'An error occurred' });
+    });
 });
 
 // GET /todos/:id - Get a specific todo by id
 app.get('/todos/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = todos.find(todo => todo.id === id);
+  const id = req.params.id;
 
-  if (!todo) {
-    res.status(404).json({ error: 'Todo not found' });
-  } else {
-    res.json(todo);
-  }
+  Todo.findById(id)
+    .then(todo => {
+      if (!todo) {
+        res.status(404).json({ error: 'Todo not found' });
+      } else {
+        res.json(todo);
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'An error occurred' });
+    });
 });
 
 // POST /todos - Create a new todo
@@ -35,39 +71,49 @@ app.post('/todos', (req, res) => {
   if (!task) {
     res.status(400).json({ error: 'Task is required' });
   } else {
-    const newTodo = { id: todos.length + 1, task };
-    todos.push(newTodo);
-    res.status(201).json(newTodo);
+    const newTodo = new Todo({ task });
+
+    newTodo.save()
+      .then(savedTodo => {
+        res.status(201).json(savedTodo);
+      })
+      .catch(error => {
+        res.status(500).json({ error: 'An error occurred' });
+      });
   }
 });
-
-// PUT /todos/:id - Update a todo
 app.put('/todos/:id', (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { task } = req.body;
-  const todoIndex = todos.findIndex(todo => todo.id === id);
 
-  if (todoIndex === -1) {
-    res.status(404).json({ error: 'Todo not found' });
-  } else if (!task) {
-    res.status(400).json({ error: 'Task is required' });
-  } else {
-    todos[todoIndex].task = task;
-    res.json(todos[todoIndex]);
-  }
+  Todo.findByIdAndUpdate(id, { task }, { new: true })
+    .then(updatedTodo => {
+      if (!updatedTodo) {
+        res.status(404).json({ error: 'Todo not found' });
+      } else {
+        res.json(updatedTodo);
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'An error occurred' });
+    });
 });
 
 // DELETE /todos/:id - Delete a todo
 app.delete('/todos/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const todoIndex = todos.findIndex(todo => todo.id === id);
+  const id = req.params.id;
 
-  if (todoIndex === -1) {
-    res.status(404).json({ error: 'Todo not found' });
-  } else {
-    const deletedTodo = todos.splice(todoIndex, 1)[0];
-    res.json(deletedTodo);
-  }
+  Todo.findByIdAndDelete(id)
+    .then(deletedTodo => {
+      if (!deletedTodo) {
+        res.status(404).json({ error: 'Todo not found' });
+      } else {
+        res.json(deletedTodo);
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'An error occurred' });
+    });
 });
 
 // Start the server only if not in a testing environment
