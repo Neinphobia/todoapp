@@ -93,7 +93,7 @@ app.put('/todos/:id', (req, res) => {
       if (!updatedTodo) {
         res.status(404).json({ error: 'Todo not found' });
       } else {
-        //console.log(updatedTodo.__v);
+        console.log(updatedTodo.__v);
         res.json(updatedTodo);
         
       }
