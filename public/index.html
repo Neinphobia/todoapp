@@ -60,7 +60,7 @@
           data.forEach((element) => {
             //displayTodo.innerText += ` ${inc} : ${element.task} \n`;
             const paragraph = document.createElement('p');
-            paragraph.innerText = element.task;
+            paragraph.innerText = `${inc} ${element.task}` ;
             document.querySelector('.container').appendChild(paragraph);
             inc += 1;
           });
