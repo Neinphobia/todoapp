@@ -20,6 +20,7 @@ mongoose.connect('mongodb+srv://ccfurkanz:SwzPk85NGvmGOrw3@todo-try.xvyjmxj.mong
 // Create a Todo schema
 const todoSchema = new mongoose.Schema({
   task: { type: String, required: true },
+  id : { type: Number, required:false},
 });
 
 // Create a Todo model
@@ -30,11 +31,7 @@ const Todo = mongoose.model('Todo', todoSchema);
 app.use(express.json());
 app.use(cors()); // Enable CORS middleware
 
-// Array to store sample data
-let todos = [
-  { id: 1, task: 'Buy groceries' },
-  { id: 2, task: 'Walk the dog' },
-];
+
 
 // GET /todos - Get all todos
 app.get('/todos', (req, res) => {
