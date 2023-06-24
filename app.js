@@ -71,7 +71,7 @@ app.post('/todos', (req, res) => {
   if (!task) {
     res.status(400).json({ error: 'Task is required' });
   } else {
-    const newTodo = new Todo({ task });
+    const newTodo = new Todo({ task, id });
 
     newTodo.save()
       .then(savedTodo => {
