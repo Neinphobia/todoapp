@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Api Todos Dark</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+    a {
+      color: #ff6b6b;
+      font-size: 26px;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ff3d3d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Api Anasayfa</h1>
+  <p>Todo => /todos </p>
+  <a href="/todos">Verileri Gör:</a>
+  <button id="fetch">
+    Verileri çek:
+  </button>
+
+  <div class="container">
+    <p id="displayTodo">
+    
+    </p>
+  </div>
+
+  <script>
+    let fetchButton = document.getElementById('fetch');
+    let displayTodo = document.getElementById('displayTodo');
+
+    let inc = 1;
+    fetchButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      fetch('/todos')
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          displayTodo.innerText = ''; // Clear previous content
+          data.forEach((element) => {
+            //displayTodo.innerText += ` ${inc} : ${element.task} \n`;
+            const paragraph = document.createElement('p');
+            paragraph.innerText = element.task;
+            document.querySelector('.container').appendChild(paragraph);
+            inc += 1;
+          });
+          inc = 1;
+        })
+        .catch((error) => {
+          console.error('An error occurred:', error);
+        });
+        fetchButton.disabled=true;
+    });
+  </script>
+</body>
+</html>

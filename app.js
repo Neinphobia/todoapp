@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const port = process.env.PORT || 3000;
+const path = require('path');
+app.use(express.static('public'));
 
 
 mongoose.connect('mongodb+srv://ccfurkanz:SwzPk85NGvmGOrw3@todo-try.xvyjmxj.mongodb.net/myTodos?retryWrites=true&w=majority', {
@@ -37,7 +39,10 @@ app.use(express.json());
 app.use(cors()); // Enable CORS middleware
 
 
-
+// index page
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
 // GET /todos - Get all todos
 app.get('/todos', (req, res) => {
   Todo.find()
