@@ -66,7 +66,7 @@ app.get('/todos/:id', (req, res) => {
 
 // POST /todos - Create a new todo
 app.post('/todos', (req, res) => {
-  const { task } = req.body;
+  const { task, id } = req.body;
 
   if (!task) {
     res.status(400).json({ error: 'Task is required' });
