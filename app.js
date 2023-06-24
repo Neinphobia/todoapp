@@ -21,6 +21,9 @@ mongoose.connect('mongodb+srv://ccfurkanz:SwzPk85NGvmGOrw3@todo-try.xvyjmxj.mong
 const todoSchema = new mongoose.Schema({
   task: { type: String, required: true },
   id : { type: Number, required:false},
+  purpose: { type: String, required:false},
+  commit: { type: String, required:false},
+  important: {type: String, required:false},
 });
 
 // Create a Todo model
