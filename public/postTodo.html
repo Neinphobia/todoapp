@@ -28,6 +28,14 @@
       margin-bottom: 20px;
       box-sizing: border-box;
     }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
 
     button#post {
       padding: 10px 20px;
@@ -50,6 +58,10 @@
         font-size: 16px;
         margin-bottom: 16px;
       }
+      input[type="number"] {
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
 
       button#post {
         font-size: 20px;
@@ -60,6 +72,8 @@
 <body>
     <form id="todoForm">
         <input type="text" value="" id="task" placeholder="Enter a task" required>
+        <input type="text" value="" id="purpose" placeholder="Enter a purpose *not required*">
+        <input type="number" value="" id="todoId" placeholder="Enter id number" >
         <button id="post">Post a todo</button>
     </form>
     <hr />
@@ -76,13 +90,15 @@
             e.preventDefault();
 
             const task = taskInput.value;
+            const purpose = document.getElementById('purpose').value;
+            const id = document.getElementById('todoId').value;
 
             fetch('/todos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ task })
+                body: JSON.stringify({ task, purpose, id })
             })
             .then(response => response.json())
             .then(data => {

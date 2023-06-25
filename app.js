@@ -74,6 +74,24 @@ app.get('/todos/:id', (req, res) => {
       res.status(500).json({ error: 'An error occurred' });
     });
 });
+//for multiple custom id finding.
+app.get('/todos/custom/:id', (req, res) => {
+  const customId = req.params.id;
+
+  Todo.find({ id: customId })
+    .then(todos => {
+      if (todos.length === 0) {
+        res.status(404).json({ error: 'No todos found with the provided custom id' });
+      } else {
+        res.json(todos);
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'An error occurred' });
+    });
+});
+
+
 
 // POST /todos - Create a new todo
 app.post('/todos', (req, res) => {
