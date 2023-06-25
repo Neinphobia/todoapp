@@ -29,6 +29,9 @@
     a:hover {
       color: #ff3d3d;
     }
+    li{
+        list-style-type:lower-roman;
+    }
   </style>
 </head>
 <body>
@@ -43,25 +46,31 @@
     <p id="displayTodo">
     
     </p>
+    <ul id="displayList">
+
+    </ul>
   </div>
 
   <script>
     let fetchButton = document.getElementById('fetch');
     let displayTodo = document.getElementById('displayTodo');
-
+    let displayList = document.getElementById('displayList');
     let inc = 1;
     fetchButton.addEventListener('click', (e) => {
       e.preventDefault();
       fetch('/todos')
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           displayTodo.innerText = ''; // Clear previous content
           data.forEach((element) => {
             //displayTodo.innerText += ` ${inc} : ${element.task} \n`;
-            const paragraph = document.createElement('p');
-            paragraph.innerText = `${inc} ${element.task}` ;
-            document.querySelector('.container').appendChild(paragraph);
+            // const paragraph = document.createElement('p');
+            // paragraph.innerText = `${inc} ${element.task}` ;
+             // document.querySelector('.container').appendChild(paragraph);
+            const list = document.createElement('li');
+            list.innerText=`${element.task}`;
+            document.querySelector('#displayList').appendChild(list);
             inc += 1;
           });
           inc = 1;
@@ -70,6 +79,8 @@
           console.error('An error occurred:', error);
         });
         fetchButton.disabled=true;
+        fetchButton.style.display="none";
+        fetchButton.remove();
     });
   </script>
 </body>
