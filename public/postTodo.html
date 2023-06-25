@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Post Todo:</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .success-animation {
+      animation-name: success;
+      animation-duration: 1s;
+    }
+
+    @keyframes success {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    button#post {
+      padding: 10px 20px;
+      font-size: 22px;
+      background-color: #ff6b6b;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button#post:hover {
+      background-color: #ff3d3d;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+      input[type="text"] {
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+
+      button#post {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <form id="todoForm">
+        <input type="text" value="" id="task" placeholder="Enter a task" required>
+        <button id="post">Post a todo</button>
+    </form>
+    <hr />
+    <br />
+    <a href="/">Todos homepage</a>
+    <a href="/todos">Todos jsonpage</a>
+
+    <script>
+        let taskInput = document.getElementById('task');
+        let postButton = document.getElementById('post');
+        let todoForm = document.getElementById('todoForm');
+
+        postButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const task = taskInput.value;
+
+            fetch('/todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ task })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log(data);
+                todoForm.classList.add('success-animation'); // Add the CSS class for the animation
+                taskInput.value = ''; // Clear the input field
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
+        });
+    </script>
+</body>
+</html>

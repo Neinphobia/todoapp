@@ -43,6 +43,10 @@ app.use(cors()); // Enable CORS middleware
   app.get('/', (req, res) => {
     res.sendFile('index.html');
   });
+  app.get('/postTodo', (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'postTodo.html');
+    res.sendFile(filePath);
+  });
 // GET /todos - Get all todos
 app.get('/todos', (req, res) => {
   Todo.find()
