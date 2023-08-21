@@ -34,7 +34,11 @@ const getCustomDetail = async (req, res) => {
 const deleteTodo = async (req, res) => {
   const id = req.params.id;
   const result = await todosService.deleteTodo(id);
-  return res.json(result);
+  const deletedResult = {
+    silinen: result,
+    silindi: true,
+  };
+  return res.json(deletedResult);
 };
 const updateTodo = async (req, res) => {
   const id = req.params.id;
