@@ -38,7 +38,10 @@ const main = async () => {
     console.log(`Server running on port ${port}`);
   });
 };
+
+//main metodunu çağırmayı unutma
 main();
+//////////////
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection:", reason);
 });
