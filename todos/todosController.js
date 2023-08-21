@@ -45,7 +45,11 @@ const updateTodo = async (req, res) => {
   const { task } = req.body;
   // console.log(id, task);
   const result = await todosService.updateTodo(id, task);
-  return res.json(result);
+  const updatedResult = {
+    güncellenen: result,
+    basarili: true,
+  };
+  return res.json(updatedResult);
 };
 module.exports = {
   getTodos,
