@@ -17,7 +17,7 @@ const main = async () => {
   }
 
   // Set up the interval
-  setInterval(upTime, intervalInMinutes * 60 * 1000);
+  setInterval(upTime, intervalInMinutes * 5 * 1000);
 
   app.use(express.json());
   app.use(cors()); // Enable CORS middleware
