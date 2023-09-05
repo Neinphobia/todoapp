@@ -8,16 +8,16 @@ const todosRouter = require("./todos/todosRouter");
 const { connectDatabase } = require("./database");
 const errorHandler = require("./errorHandler");
 
-const main = async () => {
-  const intervalInMinutes = 1; // Check every 1 minutes
-  let hoursSince = 0;
-  function upTime() {
-    hoursSince += 1;
-    console.log(`${hoursSince} mins have passed`);
-  }
+const intervalInMinutes = 1; // Check every 1 minutes
+let hoursSince = 0;
+function upTime() {
+  hoursSince += 1;
+  console.info(`${hoursSince} mins have passed`);
+}
 
+const main = async () => {
   // Set up the interval
-  setInterval(upTime, intervalInMinutes * 5 * 1000);
+  setInterval(upTime, intervalInMinutes * 1 * 1000);
 
   app.use(express.json());
   app.use(cors()); // Enable CORS middleware
