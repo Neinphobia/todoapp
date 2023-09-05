@@ -8,16 +8,16 @@ const todosRouter = require("./todos/todosRouter");
 const { connectDatabase } = require("./database");
 const errorHandler = require("./errorHandler");
 
-const intervalInMinutes = 1; // Check every 1 minutes
-let hoursSince = 0;
-function upTime() {
-  hoursSince += 1;
-  console.info(`${hoursSince} mins have passed`);
-}
-
+// const intervalInMinutes = 1; // Check every 1 minutes
+// let hoursSince = 0;
+// function upTime() {
+//   hoursSince += 1;
+//   console.info(`${hoursSince} mins have passed`);
+// }
+// setInterval(upTime, intervalInMinutes * 1 * 1000);
+let reqCount = 0;
 const main = async () => {
   // Set up the interval
-  setInterval(upTime, intervalInMinutes * 1 * 1000);
 
   app.use(express.json());
   app.use(cors()); // Enable CORS middleware
@@ -35,6 +35,8 @@ const main = async () => {
     res.sendFile("index.html");
   });
   app.get("/postTodo", (req, res) => {
+    reqCount += 1;
+    console.log(reqCount);
     const filePath = path.join(__dirname, "public", "postTodo.html");
     res.sendFile(filePath);
   });
