@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 
-const { createServer } = require("node:http");
-const { Server } = require("socket.io");
-const server = createServer(app);
+// const { createServer } = require("node:http");
+// const { Server } = require("socket.io");
+// const server = createServer(app);
 
 dotenv.config();
 
@@ -22,12 +22,12 @@ const errorHandler = require("./errorHandler");
 //   console.info(`${hoursSince} mins have passed`);
 // }
 // setInterval(upTime, intervalInMinutes * 1 * 1000);
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
 let reqCount = 0;
 const main = async () => {
   // Set up the interval
@@ -44,18 +44,18 @@ const main = async () => {
 
   //socketiochat
 
-  io.on("connection", (socket) => {
-    socket.on("chat message", (msg) => {
-      io.emit("chat message", ` ${socket.id}: ${msg}`);
-    });
-  });
+  // io.on("connection", (socket) => {
+  //   socket.on("chat message", (msg) => {
+  //     io.emit("chat message", ` ${socket.id}: ${msg}`);
+  //   });
+  // });
 
   //socketiochat
 
   await connectDatabase();
-  app.get("/chat", (req, res) => {
-    res.redirect("/chat.html");
-  });
+  // app.get("/chat", (req, res) => {
+  //   res.redirect("/chat.html");
+  // });
   // index page
   app.get("/", (req, res) => {
     res.sendFile("index.html");
@@ -73,7 +73,7 @@ const main = async () => {
   app.use(errorHandler);
 
   // Start the server only if not in a testing environment
-  server.listen(port, () => {
+  app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 };
