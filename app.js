@@ -40,7 +40,12 @@ const main = async () => {
   // Middleware to parse JSON requests
 
   //socketiochat
-  const io = new Server(server);
+  const io = new Server(server, {
+    cors: {
+      origin: "https://furkangonulal.com",
+      methods: ["GET", "POST"],
+    },
+  });
 
   io.on("connection", (socket) => {
     socket.on("chat message", (msg) => {
