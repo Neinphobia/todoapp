@@ -32,9 +32,6 @@ const main = async () => {
   // app.route('/')
   app.use(express.static(path.join(__dirname, "public")));
 
-  app.get("/chat", (req, res) => {
-    res.redirect("/chat.html");
-  });
   app.use("/todos", todosRouter);
   //
   // Middleware to parse JSON requests
@@ -56,6 +53,9 @@ const main = async () => {
   //socketiochat
 
   await connectDatabase();
+  app.get("/chat", (req, res) => {
+    res.redirect("/chat.html");
+  });
   // index page
   app.get("/", (req, res) => {
     res.sendFile("index.html");
