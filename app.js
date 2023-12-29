@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+
+const { createServer } = require("node:http");
+const { Server } = require("socket.io");
+const server = createServer(app);
+
 dotenv.config();
 
 const cors = require("cors");
@@ -23,19 +28,34 @@ const main = async () => {
 
   app.use(express.json());
   app.use(cors()); // Enable CORS middleware
-  app.use("/todos", todosRouter);
 
   // app.route('/')
   app.use(express.static(path.join(__dirname, "public")));
 
+  app.get("/chat", (req, res) => {
+    res.redirect("/chat.html");
+  });
+  app.use("/todos", todosRouter);
   //
   // Middleware to parse JSON requests
+
+  //socketiochat
+  const io = new Server(server);
+
+  io.on("connection", (socket) => {
+    socket.on("chat message", (msg) => {
+      io.emit("chat message", ` ${socket.id}: ${msg}`);
+    });
+  });
+
+  //socketiochat
 
   await connectDatabase();
   // index page
   app.get("/", (req, res) => {
     res.sendFile("index.html");
   });
+
   app.get("/postTodo", (req, res) => {
     reqCount += 1;
     console.log(reqCount);
@@ -48,7 +68,7 @@ const main = async () => {
   app.use(errorHandler);
 
   // Start the server only if not in a testing environment
-  await app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
 };
