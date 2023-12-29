@@ -22,6 +22,12 @@ const errorHandler = require("./errorHandler");
 //   console.info(`${hoursSince} mins have passed`);
 // }
 // setInterval(upTime, intervalInMinutes * 1 * 1000);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 let reqCount = 0;
 const main = async () => {
   // Set up the interval
@@ -37,12 +43,6 @@ const main = async () => {
   // Middleware to parse JSON requests
 
   //socketiochat
-  const io = new Server(server, {
-    cors: {
-      origin: "https://furkangonulal.com",
-      methods: ["GET", "POST"],
-    },
-  });
 
   io.on("connection", (socket) => {
     socket.on("chat message", (msg) => {
